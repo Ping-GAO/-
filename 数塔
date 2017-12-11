@@ -1,0 +1,71 @@
+/*
+ * main.c
+ *
+ *  Created on: Dec 11, 2017
+ *      Author: gary9
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int find_max(int **matrix,int height,int pos,int lvl);
+void print_matrix(int **,int);
+int max(int,int);
+int main(){
+	int cnt,i,j;
+	int lvl;
+	scanf("%d",&cnt);
+	while(cnt!=0){
+		scanf("%d",&lvl);
+		int **matrix = (int **)malloc(sizeof(int *)*lvl);
+		for(i=0;i<lvl;i++){
+			matrix[i] = (int *)malloc(sizeof(int)*lvl);
+		}
+		// 未知原因 memset无法初始化
+		// memset(matrix,0,lvl*lvl);
+		for(i=0;i<lvl;i++){
+			for(j=0;j<=i;j++){
+				scanf("%d",&matrix[i][j]);
+			}
+		}
+		printf("\n");
+		print_matrix(matrix,lvl);
+		int max = find_max(matrix,0,0,lvl);
+		printf("max %d\n",max);
+		cnt--;
+	}
+
+
+	return 0;
+}
+
+void print_matrix(int **matrix,int lvl){
+	int i,j;
+	for(i=0;i<lvl;i++){
+		for(j=0;j<=i;j++){
+			printf("%d ",matrix[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+int find_max(int **matrix,int height,int pos,int lvl){
+	if(height==lvl-1){
+		//printf("base case\n");
+		//printf("%d\n",pos);
+		return matrix[height][pos];
+	}
+	else{
+		return matrix[height][pos] + max(find_max(matrix,height+1,pos,lvl),find_max(matrix,height+1,pos+1,lvl));
+	}
+}
+
+
+int max(int a,int b){
+	if(a>b){
+		return a;
+	}
+	else{
+		return b;
+	}
+}
