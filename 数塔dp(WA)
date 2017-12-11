@@ -1,0 +1,81 @@
+/*
+ * main.c
+ *
+ *  Created on: Dec 11, 2017
+ *      Author: gary9
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int find_max(int **matrix,int height,int pos,int lvl,int *array);
+void print_matrix(int **,int);
+int max1(int a,int b);
+int main(){
+	int cnt,i,j;
+	int lvl;
+	scanf("%d",&cnt);
+	while(cnt!=0){
+		scanf("%d",&lvl);
+		int **matrix = (int **)malloc(sizeof(int *)*lvl);
+		for(i=0;i<lvl;i++){
+			matrix[i] = (int *)malloc(sizeof(int)*lvl);
+		}
+		//printf("%d-\n",(lvl-1)*(lvl-1)-1);
+		int *array = (int *)malloc(sizeof(int)*(lvl-1)*(lvl-1));
+		for(i=0;i<(lvl-1)*(lvl-1);i++){
+			array[i] = -1;
+		}
+
+		// 未知原因 memset无法初始化
+		// memset(matrix,0,lvl*lvl);
+		for(i=0;i<lvl;i++){
+			for(j=0;j<=i;j++){
+				scanf("%d",&matrix[i][j]);
+			}
+		}
+		//printf("\n");
+		//print_matrix(matrix,lvl);
+		int max = find_max(matrix,0,0,lvl,array);
+		printf("%d\n",max);
+		free(matrix);
+		free(array);
+		cnt--;
+	}
+	return 0;
+}
+
+void print_matrix(int **matrix,int lvl){
+	int i,j;
+	for(i=0;i<lvl;i++){
+		for(j=0;j<=i;j++){
+			printf("%d ",matrix[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+int find_max(int **matrix,int height,int pos,int lvl,int *array){
+	if(array[((1+height)*height)/2+pos+1]!=-1){
+		// 已知
+		return array[((1+height)*height)/2+pos+1];
+	}
+	else{
+		if(height==lvl-1){
+			array[((1+height)*height)/2+pos+1] = matrix[height][pos];
+			return array[((1+height)*height)/2+pos+1];
+		}
+		else{
+			array[((1+height)*height)/2+pos+1] = matrix[height][pos] + max1(find_max(matrix,height+1,pos,lvl,array),find_max(matrix,height+1,pos+1,lvl,array));
+			return array[((1+height)*height)/2+pos+1];
+		}
+	}
+}
+
+
+int max1(int a,int b){
+	if(a>b){
+		return a;
+	}
+	return b;
+}
