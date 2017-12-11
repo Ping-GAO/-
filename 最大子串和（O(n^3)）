@@ -1,0 +1,48 @@
+/*
+ * main.c
+ *
+ *  Created on: Dec 11, 2017
+ *      Author: gary9
+ */
+#include <stdio.h>
+#include <stdlib.h>
+void print_array(int *,int);
+int main(){
+	int cnt;
+	scanf("%d",&cnt);
+	int i,j;
+	int cnt2;
+	for(i=0;i<cnt;i++){
+		scanf("%d",&cnt2);
+		int *array = (int *)malloc(sizeof(int)*cnt2);
+		for(j=0;j<cnt2;j++){
+			scanf("%d",&array[j]);
+		}
+		print_array(array,cnt2);
+		// max subarray
+		int a,b,c;
+		int max = -9999;
+		for(a=0;a<cnt2;a++){
+			for(b=a;b<cnt2;b++){
+				int sum=0;
+				for(c=a;c<=b;c++){
+					sum+=array[c];
+				}
+				if(sum>max){
+					max = sum;
+				}
+			}
+		}
+		printf("max is %d\n",max);
+	}
+
+
+	return 0;
+}
+void print_array(int *array,int cnt2){
+	int j;
+	for(j=0;j<cnt2;j++){
+		printf("%d ",array[j]);
+	}
+	printf("\n");
+}
