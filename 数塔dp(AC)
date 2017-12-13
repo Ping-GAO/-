@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+int lvl;
+int matrix[101][101];
+int dp[101][101];
+int max(int a, int b);
+void print_matrix();
+int find_max(int height, int pos);
+int main() {
+	int i,num;
+	int a, b;
+	scanf("%d",&num);
+	for (i = 0; i < num;i++) {
+		scanf("%d",&lvl);
+		memset(dp,-1,sizeof(dp));
+
+		for (a = 0; a < lvl;a++) {
+			for (b = 0; b <= a;b++) {
+				scanf("%d", &matrix[a][b]);
+			}
+		}
+		// print_matrix();
+		printf("%d\n",find_max(0,0));
+	}
+	
+
+	return 0;
+}
+
+
+int max(int a, int b) {
+	return a > b ? a : b;
+}
+
+void print_matrix() {
+	int a, b;
+	for (a = 0; a < lvl; a++) {
+		for (b = 0; b <= a; b++) {
+			printf("%d ", matrix[a][b]);
+		}
+		printf("\n");
+	}
+	
+}
+
+int find_max(int height,int pos) {
+	if (dp[height][pos]!=-1) {
+		//  printf("jizhule\n");
+		return dp[height][pos];
+	}
+	else if (height==lvl-1) {
+		dp[height][pos] = matrix[height][pos];
+	}
+	else {
+		dp[height][pos] = max(find_max(height + 1, pos), find_max(height + 1, pos + 1)) + matrix[height][pos];
+		return dp[height][pos];
+	}
+}
