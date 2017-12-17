@@ -1,49 +1,55 @@
 #include <stdio.h>
 #include <string.h>
-int array[20];
-int max(int a ,int b);
+int array[100000];
+#define max(a,b)((a>b)?(a):(b))
 int main(){
 	int j,cases;
 	scanf("%d",&cases);
 	for(j=1;j<=cases;j++){
 		int num,i;
 		scanf("%d",&num);
-		// num is len of array
-		memset(array,0,sizeof(array));
-		
 		for(i=0;i<num;i++){
 			scanf("%d",&array[i]);
 		}
 		int max_Local = array[0];
 		int global = array[0];
 		int start = 0;
-		int end;
+		int end = 0;
 		int global_pre;
+
 		for(i=1;i<num;i++){
+
 			max_Local = max(array[i],array[i]+max_Local);
 			global_pre= global;
 			global = max(global,max_Local);
 			if(max_Local<0){
-				start = i+1;
+				//printf("max local is %d\n",max_Local);
+				start =  i+1;
+				end = start;
 			}
 			if(global>global_pre){
 				end = i;
-			}	
+			}
+			//printf("maxLocal is %d,max_glocabl is %d\n",max_Local,global);
 		}
-		if(cases==1){
-			printf("Case %d:\n%d %d %d",j,global,start+1,end+1);
+		if(global<=0){
+			for(i=0;i<num;i++){
+				if(array[i]==global){
+					start  = i;
+					end = i;
+					break;
+				}
+
+			}
+
+		}
+		if(j==cases){
+			printf("Case %d:\n%d %d %d\n",j,global,start+1,end+1);
 		}
 		else{
-			printf("Case %d:\n%d %d %d\n",j,global,start+1,end+1);
+			printf("Case %d:\n%d %d %d\n\n",j,global,start+1,end+1);
 		}
 	}
 
 	return 0;
-}
-
-
-
-
-int max(int a,int b){
-	return a>b?a:b;
 }
