@@ -1,0 +1,153 @@
+#include <iostream>
+#include <set>
+#include <cstring>
+#include <queue>
+#include <cstdlib>
+using namespace std;
+struct MyStruct
+{
+	int i;
+	int j;
+	char a;
+};
+bool has_solution;
+MyStruct matrix[9][9];
+queue<MyStruct> q;
+void print_matrix();
+void solve();
+int main() {
+	int num;
+	cin >> num;
+	int i, j;
+	char input[10];
+	while (num) {
+		has_solution =  false;
+		memset(matrix,0,sizeof(matrix));
+		for (i = 0; i < 9; i++) {
+			for (j = 0; j < 9; j++) {
+				cin >> matrix[i][j].a;
+				matrix[i][j].i = i;
+				matrix[i][j].j = j;
+				if (matrix[i][j].a == '?') {
+					q.push(matrix[i][j]);
+				}
+			}
+		}
+
+		if (num - 1 != 0) {
+			getchar();
+			cin.get(input, 5);
+		}
+		solve();
+
+		if( has_solution==true){
+			cout<<"solution"<<endl;
+			print_matrix();
+		}
+		else{
+
+			cout<<"impossible"<<endl;
+		}
+		if (num - 1 != 0) {
+			cout<<"---"<<endl;
+		}
+		num--;
+	}
+	return 0;
+}
+
+void print_matrix() {
+	int i, j;
+	for (i = 0; i<9; i++) {
+		for (j = 0; j<9; j++) {
+			cout << matrix[i][j].a;
+		}
+		cout << endl;
+	}
+}
+
+void solve() {
+	if(has_solution==true){
+		return;
+	}
+	if (q.empty()) {
+		has_solution = true;
+		//print_matrix();
+		return;
+	}
+
+
+	set<int> s;
+
+	MyStruct temp = q.front();
+
+	int i, j;
+
+	for (i = 1; i < 10;i++) {
+		s.insert(i);
+	}
+
+
+	for (i = 0; i < 9;i++) {
+		if (matrix[i][temp.j].a != '?') {
+			s.erase(atoi(&matrix[i][temp.j].a));
+		}
+	}
+	for (j = 0; j < 9;j++) {
+		if (matrix[temp.i][j].a != '?') {
+			s.erase(atoi(&matrix[temp.i][j].a));
+		}
+	}
+	int start_i, start_j, end_i, end_j;
+	if (temp.i<3) {
+		start_i = 0;
+		end_i = 3;
+	}
+	else if (temp.i<6) {
+		start_i = 3;
+		end_i = 6;
+	}
+	else {
+		start_i = 6;
+		end_i = 9;
+	}
+	if (temp.j<3) {
+		start_j = 0;
+		end_j = 3;
+	}
+	else if (temp.j<6) {
+		start_j = 3;
+		end_j = 6;
+	}
+	else {
+		start_j = 6;
+		end_j = 9;
+	}
+	for (i = start_i; i < end_i;i++) {
+		for (j = start_j; j < end_j;j++) {
+			if (matrix[i][j].a != '?') {
+				s.erase(atoi(&matrix[i][j].a));
+			}
+		}
+	}
+	if (s.size()==0) {
+		return;
+	}
+	else {
+		q.pop();
+	}
+	set<int>::iterator iter = s.begin();
+	char c[10];
+	while (iter != s.end()) {
+		itoa(*iter,c,10);
+		matrix[temp.i][temp.j].a = c[0];
+		solve();
+		if(has_solution==true){
+			return;
+		}
+		++iter;
+	}
+	// backtrack
+	matrix[temp.i][temp.j].a = '?';
+	q.push(temp);
+}
