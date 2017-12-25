@@ -1,0 +1,196 @@
+#include <iostream>
+#include <set>
+#include <cstring>
+#include <queue>
+#include <cstdlib>
+using namespace std;
+struct MyStruct
+{
+	int i;
+	int j;
+	char a;
+};
+bool has_solution;MyStruct matrix[9][9];
+queue<MyStruct> q;
+void print_matrix();
+void solve();
+/* TLE no need to traversl the entire tree to know
+ * there is no solution
+ * we can just do a simple check
+ */
+int check();
+int main() {
+	int num;
+	cin >> num;
+	int i, j;
+	char input[10];
+	while (num) {
+		// initialize
+		has_solution =  false;
+		while (!q.empty()) q.pop();
+
+		// read input
+		for (i = 0; i < 9; i++) {
+			for (j = 0; j < 9; j++) {
+				cin >> matrix[i][j].a;
+				matrix[i][j].i = i;
+				matrix[i][j].j = j;
+				if (matrix[i][j].a == '?') {
+					q.push(matrix[i][j]);
+				}
+			}
+		}
+
+
+		// get rid of the parting line
+		if (num - 1 != 0) {
+			getchar();
+			cin.get(input, 5);
+		}
+
+		// early exit
+		if(check()==0){
+			cout<<"impossible"<<endl;
+		}
+		else{
+			// slove the sudoku
+			solve();
+			print_matrix();
+		}
+		if (num - 1 != 0) {
+			cout<<"---"<<endl;
+		}
+		num--;
+	}
+	return 0;
+}
+
+void print_matrix() {
+	int i, j;
+	for (i = 0; i<9; i++) {
+		for (j = 0; j<9; j++) {
+			cout << matrix[i][j].a;
+		}
+		cout << endl;
+	}
+}
+
+void solve() {
+	//print_matrix();
+	//cout<<endl;
+	if (q.empty()) {
+		// if queue empty it means we have a legit answer
+		has_solution = true;
+		return;
+	}
+
+
+	set<int> s;
+
+	MyStruct temp = q.front();
+
+	int i, j;
+
+	for (i = 1; i < 10;i++) {
+		s.insert(i);
+	}
+
+
+	for (i = 0; i < 9;i++) {
+		if (matrix[i][temp.j].a != '?') {
+			s.erase(atoi(&matrix[i][temp.j].a));
+		}
+	}
+	for (j = 0; j < 9;j++) {
+		if (matrix[temp.i][j].a != '?') {
+			s.erase(atoi(&matrix[temp.i][j].a));
+		}
+	}
+	int start_i, start_j, end_i, end_j;
+	if (temp.i<3) {
+		start_i = 0;
+		end_i = 3;
+	}
+	else if (temp.i<6) {
+		start_i = 3;
+		end_i = 6;
+	}
+	else {
+		start_i = 6;
+		end_i = 9;
+	}
+	if (temp.j<3) {
+		start_j = 0;
+		end_j = 3;
+	}
+	else if (temp.j<6) {
+		start_j = 3;
+		end_j = 6;
+	}
+	else {
+		start_j = 6;
+		end_j = 9;
+	}
+	for (i = start_i; i < end_i;i++) {
+		for (j = start_j; j < end_j;j++) {
+			if (matrix[i][j].a != '?') {
+				s.erase(atoi(&matrix[i][j].a));
+			}
+		}
+	}
+	if (s.size()==0) {
+		// tigger backtrack go back one step
+		return;
+	}
+	else {
+		q.pop();
+	}
+	set<int>::iterator iter = s.begin();
+	char c[10];
+	while (iter != s.end()) {
+		itoa(*iter,c,10);
+		matrix[temp.i][temp.j].a = c[0];
+		solve();
+		// get out of multiple depth recussion
+		if(has_solution==true){
+			return;
+		}
+		// this case didnt work try another number
+		++iter;
+	}
+	// backtrack
+	// go up in the recussion tree
+	// back to parent case
+	matrix[temp.i][temp.j].a = '?';
+	q.push(temp);
+}
+
+int check(){
+	int i,j;
+	set<char> s2;
+	set<char> s3;
+	for(i=0;i<9;i++){
+		s2.clear();
+		s3.clear();
+		for(j=0;j<9;j++){
+			if(matrix[i][j].a != '?'){
+				if(s2.count(matrix[i][j].a)>0){
+					return 0;
+				}
+				else{
+					s2.insert(matrix[i][j].a);
+				}
+			}
+			if(matrix[j][i].a != '?' &&  matrix[j][i].a != '0'){
+				if(s3.count(matrix[j][i].a)>0){
+					return 0;
+				}
+				else{
+					s3.insert(matrix[j][i].a);
+				}
+			}
+		}
+	}
+
+	return 1;
+}
