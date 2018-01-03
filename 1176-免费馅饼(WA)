@@ -1,0 +1,54 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int matrix[110005][15];
+int dp[110005][15];
+int mymax;
+void print_matrix();
+int find_max(int time,int pos);
+int main(){
+	int num;
+	while(scanf("%d",&num) && num){
+		int i;
+		mymax = 0;
+		memset(matrix,0,sizeof(matrix));
+		memset(dp,-1,sizeof(dp));
+		int temp1,temp2;
+		for(i=0;i<num;i++){
+			scanf("%d %d",&temp1,&temp2);
+			if(temp2 > mymax){
+				mymax = temp2;
+			}
+			matrix[temp2][temp1]++;
+		}
+		// print_matrix();
+		cout<<find_max(0,5)<<endl;
+	}
+
+
+	return 0;
+}
+
+void  print_matrix(){
+	int i,j;
+	for(i=1;i<=mymax;i++){
+		for(j=0;j<11;j++){
+			cout<<matrix[i][j]<<"\t";
+		}
+		cout<<endl;
+	}
+}
+
+int find_max(int time,int pos){
+	if(dp[time][pos]!=-1){
+		return dp[time][pos];
+	}
+
+	if(time == mymax){
+		dp[time][pos] = matrix[time][pos];
+		return dp[time][pos];
+	}
+	dp[time][pos] = max(max(matrix[time][pos]+find_max(time+1,pos-1),matrix[time][pos]+find_max(time+1,pos+1)),matrix[time][pos]+find_max(time+1,pos));
+	return dp[time][pos];
+}
