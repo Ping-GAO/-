@@ -1,0 +1,95 @@
+#include <iostream>
+using namespace std;
+#define MAX 9
+int matrix[MAX][MAX];
+void print_matirx();
+void solve(int pos);
+bool ok(int i,int j,int value);
+int cnt;
+int flag;
+struct node {
+	int i;
+	int j;
+};
+node arr[100];
+int main() {
+	char temp;
+	cnt = 0;
+	int flag = false;
+	for (int i = 0; i < MAX;i++) {
+		for (int j = 0; j < MAX;j++) {
+			cin >> temp;
+			matrix[i][j] = temp-'0';
+			if (matrix[i][j]==0) {
+				arr[cnt].i = i;
+				arr[cnt].j = j;
+				cnt++;
+			}
+		}
+		getchar();
+	}
+	// print_matirx();
+	solve(0);
+
+
+
+
+
+	return 0;
+}
+
+void print_matirx() {
+	for (int i = 0; i < MAX; i++) {
+		for (int j = 0; j < MAX; j++) {
+			cout << matrix[i][j];
+		}
+		cout << endl;
+
+	}
+}
+
+void solve(int pos) {
+	if (pos==cnt) {
+		flag = true;
+		print_matirx();
+		return;
+	}
+
+	if (flag) {
+		return;
+	}
+
+	for (int i = 1; i <= MAX;i++) {
+		if (ok(arr[pos].i,arr[pos].j,i)) {
+			matrix[arr[pos].i][arr[pos].j] = i;
+			solve(pos+1);
+			matrix[arr[pos].i][arr[pos].j] = 0;
+		}
+	}
+
+
+
+
+}
+
+
+bool ok(int i, int j,int value) {
+	for (int a = 0; a < MAX;a++) {
+		if (matrix[i][a]==value) {
+			return false;
+		}
+		if (matrix[a][j] == value) {
+			return false;
+		}
+	}
+	int xx = i / 3 * 3;
+	int yy = j / 3 * 3;
+	for (int a = xx; a < xx + 3;a++) {
+		for (int b = yy; b < yy + 3;b++) {
+			if (matrix[a][b]==value) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
