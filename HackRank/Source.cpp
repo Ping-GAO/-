@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+long long roadsAndLibraries(int n, int c_lib, int c_road, vector < vector<int> > matrix);
+void DFS(vector < vector<int> > &matrix, vector <int> &visited, int i,int n);
+long long global_cnt;
+int main() {
+	int q;
+	cin >> q;
+	for (int a0 = 0; a0 < q; a0++) {
+		int n;
+		int m;
+		int c_lib;
+		int c_road;
+		cin >> n >> m >> c_lib >> c_road;
+		vector< vector<int> > matrix(n + 1, vector<int>(n + 1, 0));
+		for (int cities_i = 0; cities_i < m; cities_i++) {
+			int a, b;
+			cin >> a >> b;
+			matrix[a][b] = 1;
+			matrix[b][a] = 1;
+		}
+		long long result = roadsAndLibraries(n, c_lib, c_road, matrix);
+		cout << result << endl;
+	}
+	return 0;
+}
+
+
+long long roadsAndLibraries(int n, int c_lib, int c_road, vector < vector<int> > matrix) {
+	if (c_lib <= c_road) {
+		return n*c_lib;
+	}
+	else {
+
+		vector<int> visited(n + 1, 0);
+		// DFS(&matrix,&visited,);
+		/*
+		cout << "print: " << endl;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				cout << matrix[i][j] << "  ";
+			}
+			cout << endl;
+		}
+		*/
+		long long cnt = 0;
+		global_cnt = 0;
+		for (int i = 1; i <= n;i++) {
+			if (visited[i]==1) {
+				continue;
+			}
+			
+			DFS(matrix, visited, i, n);
+			// cout << "i: " << i << "sum: " << global_cnt << endl;
+			cnt++;
+		}
+		
+		return cnt*c_lib + global_cnt*c_road;
+	}
+}
+void DFS(vector < vector<int> > &matrix, vector <int> &visited, int i, int n) {
+	visited[i] = 1;
+	
+	for (int j = 1; j <= n;j++) {
+		if (visited[j]==1) {
+			continue;
+		}
+		if (matrix[i][j]==1) {
+			visited[j] = 1;
+			global_cnt++;
+			DFS(matrix, visited, j, n);
+		}
+	}
+	
+}
