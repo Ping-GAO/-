@@ -1,0 +1,45 @@
+
+
+int find_max(Node *root) {
+    if (root->right == NULL) {
+        return root->data;
+    }
+    return find_max(root->right);
+}
+
+
+int find_mini(Node *root) {
+    if (root->left == NULL) {
+        return root->data;
+    }
+    return find_mini(root->left);
+}
+
+
+bool checkBST(Node *root) {
+    if (root == NULL || (root->left == NULL && root->right == NULL)) {
+        return true;
+    }
+    if (root->left == NULL && root->right != NULL) {
+        if (root->right->data > root->data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    if (root->right == NULL && root->left != NULL) {
+        if (root->left->data < root->data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    bool l = checkBST(root->left);
+    bool r = checkBST(root->right);
+    int max = find_max(root->left);
+    int mini = find_mini(root->right);
+    if (root->data < mini && root->data > max && r && l) {
+        return true;
+    }
+    return false;
+}
