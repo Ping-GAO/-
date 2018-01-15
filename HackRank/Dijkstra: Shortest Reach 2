@@ -1,0 +1,85 @@
+#include <iostream>
+#include <queue>
+#include <climits>
+#include <cstring>
+
+using namespace std;
+int matrix[3005][3005];
+struct node{
+    int i;
+    long dis;
+
+};
+node arr[3005];
+
+bool operator <(const node& a, const node& b) {
+    return a.dis > b.dis;
+};
+int main() {
+    int T;
+    cin >> T;
+    while (T) {
+        int N, M;
+        cin >> N >> M;
+        memset(matrix,0,sizeof(matrix));
+        for (int i = 0; i < M; i++) {
+            int from, to, weight;
+            scanf("%d %d %d",&from,&to,&weight);
+            if(matrix[from][to]==0){
+                matrix[from][to] = weight;
+                matrix[to][from] = weight;
+            }
+            else if(matrix[from][to]>weight){
+                matrix[from][to] = weight;
+                matrix[to][from] = weight;
+            }
+
+        }
+        int S;
+        cin >> S;
+        for(int i=1;i<=N;i++){
+            arr[i].i = i;
+            if(i==S){
+                arr[i].dis = 0;
+            }
+            else{
+                arr[i].dis=LONG_MAX;
+            }
+
+        }
+        priority_queue<node> q;
+        q.push(arr[S]);
+        while(!q.empty()){
+            node temp = q.top();
+            q.pop();
+            for(int j=1;j<=N;j++){
+                if(matrix[temp.i][j]==0){
+                    continue;
+                }
+                if(arr[j].dis > temp.dis+matrix[temp.i][j]){
+                    arr[j].dis = temp.dis + matrix[temp.i][j];
+                    q.push(arr[j]);
+                }
+
+            }
+
+        }
+        for(int i=1;i<=N;i++){
+            if(i==S){
+                ;
+            }
+            else{
+                if(arr[i].dis==LONG_MAX){
+                    cout<<-1<<" ";
+                }
+                else{
+                    cout<<arr[i].dis<<" ";
+                }
+            }
+
+        }
+        cout<<endl;
+        T--;
+    }
+    return 0;
+}
