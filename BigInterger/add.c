@@ -13,7 +13,8 @@ int main(int argc, char **argv)
     BigNum num1;  // first input number
     BigNum num2;  // second input number
     BigNum sum;   // num1 + num2
-
+    BigNum minus;
+    BigNum multi;
     if (argc < 3) {
         printf("Usage: %s Num1 Num2\n", argv[0]);
         return 1;
@@ -25,7 +26,8 @@ int main(int argc, char **argv)
     initBigNum(&num1, 20);
     initBigNum(&num2, 20);
     initBigNum(&sum,  20);
-
+    initBigNum(&minus, 20);
+    initBigNum(&multi, 20);
     // Extract values from cmd line args
     if (!scanBigNum(argv[1], &num1)) {
         printf("First number invalid\n");
@@ -38,12 +40,25 @@ int main(int argc, char **argv)
 
     // Add num1+num2, store result in sum
     addBigNums(num1, num2, &sum);
+    subtractBigNums(num1, num2, &minus);
+    multiplyBigNums(num1, num2, &multi);
 
     printf("Sum of "); showBigNum(num1);
     printf("\nand "); showBigNum(num2);
     printf("\nis "); showBigNum(sum);
     printf("\n");
 
+    printf("----------------------------\n");
+    printf("Subtraction of "); showBigNum(num1);
+    printf("\nand "); showBigNum(num2);
+    printf("\nis "); showBigNum(minus);
+    printf("\n");
+
+    printf("----------------------------\n");
+    printf("Multiplication of "); showBigNum(num1);
+    printf("\nand "); showBigNum(num2);
+    printf("\nis "); showBigNum(multi);
+    printf("\n");
     return 0;
 
 }

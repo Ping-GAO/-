@@ -45,8 +45,25 @@ int  isEmptyStack(Stack s)
 void showStack(Stack s)
 {
     printf("Base ");
-    for (int i = 0; i < s.top; i++) {
+    int i;
+    for (i = 0; i < s.top; i++) {
         printf("%c ", s.items[i]);
     }
     printf("Top\n");
+}
+
+void copy(Stack *s, Stack ori){
+    Stack temp;
+    initStack(&temp);
+    while(!isEmptyStack(ori)){
+        char a = popStack(&ori);
+        pushStack(&temp,a);
+    }
+    while(!isEmptyStack(temp)){
+        char b = popStack(&temp);
+        pushStack(s,b);
+    }
+
+
+
 }

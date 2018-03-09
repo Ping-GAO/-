@@ -18,3 +18,4 @@ int  pushStack(Stack *s, Item val);
 Item popStack(Stack *s);
 int  isEmptyStack(Stack s);
 void showStack(Stack s);
+void copy(Stack *s, Stack ori);

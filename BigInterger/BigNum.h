@@ -14,8 +14,7 @@ typedef struct _big_num {
     Byte *bytes;  /// array of Bytes
 } BigNum;
 
-int max(int a, int b);
-int mini(int a,int b);
+
 
 // Initialise a BigNum to N bytes, all zero
 void initBigNum(BigNum *n, int Nbytes);
@@ -29,6 +28,13 @@ int scanBigNum(char *s, BigNum *n);
 
 // Display a BigNum in decimal format
 void showBigNum(BigNum n);
+
+void subtractBigNums(BigNum n, BigNum m, BigNum *res);
+
+void multiplyBigNums(BigNum n, BigNum m, BigNum *res);
+
+
+void multiplyBigNums_single_digit(BigNum n,int a, Stack *s);
 
 
 
