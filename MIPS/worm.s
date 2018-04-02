@@ -52,7 +52,7 @@
 
 ####################################
 # .DATA
-	.data
+.data
 
 	.align 4
 wormCol:	.space	40 * 4
@@ -62,15 +62,6 @@ wormRow:	.space	40 * 4
 grid:		.space	20 * 40 * 1
 
 randSeed:	.word	0
-
-# the constant i added
-#NCOLS: 		.word   40
-#NROWS:		.word   20
-#MAX_LEN: 	.word   40
-#MAX_ITER:	.word   100
-
-
-
 main__0:	.asciiz "Invalid Length (4..20)"
 main__1:	.asciiz "Invalid # Moves (0..99)"
 main__2:	.asciiz "Invalid Rand Seed (0..Big)"
@@ -223,21 +214,30 @@ main_i_cond:
 
 	# clearGrid();
 	jal	clearGrid
-
+   nop
 	# addWormToGrid($a0=length);
 	add	$a0, $0, $s2
 	jal	addWormToGrid
-
+   nop
+   
+   
 	# printf(CLEAR)
+	
 	la	$a0, main__clear
-	addiu	$v0, $0, 4	# print_string
+	addiu	$v0, $0, 4	
 	syscall
-
+   
+  
+   
 	# printf("Iteration ")
-	la	$a0, main__3
-	addiu	$v0, $0, 4	# print_string
+	
+	la	$a0,main__3
+	addiu	$v0, $0, 4
 	syscall
 	
+	#li $a0, 22
+	#li $v0,1
+	#syscall
 	
 
 	# printf("%d",i)
@@ -270,7 +270,7 @@ main_i_cond:
 
 main_moveWorm_phi:
 	addi	$a0, $0, 1
-	jal	delay
+	#jal	delay
 
 main_i_step:
 	addi	$s4, $s4, 1
@@ -641,10 +641,21 @@ onGrid:
 #	- `row' in $a1
 
 # Code:
-	move $t0, $a0			# t0 row
-	move $t1, $a1     		# t1 col
-
-
+	move $t1, $a0			# t0 row
+	move $t0, $a1     		# t1 col
+   
+   #li $a0, 'a'
+   #li $v0,11
+   #syscall
+   
+   #move $a0, $t0
+   #li $v0,1
+   #syscall
+   
+   #li $a0, 'b'
+   #li $v0,11
+   #syscall
+   
 	#li $t0,20
 	#move $a0, $t0
 	#li $v0,1
@@ -702,9 +713,16 @@ onGrid:
    and $v0,$v0, $t4
    and $v0, $v0, $t5
    
-   #move $a0, $t2
+   #move $t0, $v0
+   
+   #move $a0, $t5
    #li $v0, 1
    #syscall
+   #li $a0, '\n'
+   #li $v0,11
+   #syscall
+   
+   #move $v0, $t0
 
 ### TODO: complete this function
 
