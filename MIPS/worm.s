@@ -59,8 +59,7 @@ wormCol:	.space	40 * 4
 	.align 4
 wormRow:	.space	40 * 4
 	.align 4
-grid:		.space	20 * 40 * 1
-
+grid:		.space	20 * 40 * 4
 randSeed:	.word	0
 main__0:	.asciiz "Invalid Length (4..20)"
 main__1:	.asciiz "Invalid # Moves (0..99)"
@@ -210,8 +209,7 @@ main_i_cond:
 	# i <= ntimes  ->  ntimes >= i  ->  !(ntimes < i)
 	#   ->  $at <- (ntimes < i) ? 1 : 0
 	slt	$at, $s3, $s4
-	bne	$at, $0, main_i_end
-
+	bne	$at, $0, main_i_end 
 	# clearGrid();
 	jal	clearGrid
    nop
@@ -227,19 +225,13 @@ main_i_cond:
 	addiu	$v0, $0, 4	
 	syscall
    
-  
-   
 	# printf("Iteration ")
 	
 	la	$a0,main__3
 	addiu	$v0, $0, 4
 	syscall
-	
-	#li $a0, 22
-	#li $v0,1
-	#syscall
-	
-
+	   
+   
 	# printf("%d",i)
 	add	$a0, $0, $s4
 	addiu	$v0, $0, 1	# print_int
@@ -249,10 +241,12 @@ main_i_cond:
 	addi	$a0, $0, 0x0a
 	addiu	$v0, $0, 11	# print_char
 	syscall
+	
+	
 
 	# drawGrid();
 	jal	drawGrid
-
+   nop
 	# Debugging? print worm pos as (r1,c1) (r2,c2) ...
 
 	# if (!moveWorm(length)) {...break}
@@ -267,6 +261,8 @@ main_i_cond:
 
 	# break;
 	j	main_i_end
+
+
 
 main_moveWorm_phi:
 	addi	$a0, $0, 1
@@ -1035,12 +1031,24 @@ moveWorm:
 		j moveWorm_loop3
 	moveWorm_end3:
     
+	#li $a0, 'n'
+	#li $v0,11
+	#syscall
 	move $a0, $s7
+	
 	#li $v0,1
 	#syscall
 	jal randValue
-
+   
 	move $t0, $v0
+	#li $a0, 'i'
+	#li $v0,11
+	#syscall
+	
+	#move $a0, $t0
+	#li $v0,1
+	#syscall
+	
 	li $t2, 4
 	mul $t0, $t0, $t2
 	add $t5, $t0, $s6
@@ -1343,13 +1351,13 @@ delay:
 		beq $t3, $0, delay_end1
 		li $t1, 0
 		delay_loop2:
-			slti $t4, $t1, 2000
+			slti $t4, $t1, 200
 			beq $t4, $0, delay_end2
 
 
 			li $t2, 0
 			delay_loop3:
-				slti $t5, $t2, 40
+				slti $t5, $t2, 120
 				beq $t5, $0, delay_end3
 				li $t7, 3
 				mul $t6, $t6, $t7
@@ -1397,6 +1405,10 @@ seedRand:
 
 	# randSeed <- $a0
 	sw	$a0, randSeed
+   
+   #li $a0, 1000
+   #li $v0,1
+   #syscall
 
 seedRand__post:
 	# tear down stack frame
@@ -1433,6 +1445,15 @@ randValue:
 
 	# $t0 <- randSeed
 	lw	$t0, randSeed
+	
+	#move $t5, $a0
+	#li $a0,'r'
+	#li $v0,11
+	#syscall
+	#move $a0, $t0
+	#li $v0,1
+   #syscall
+   #move $a0, $t5
 	# $t1 <- 1103515245 (magic)
 	li	$t1, 0x41c64e6d
 
