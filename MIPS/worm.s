@@ -59,7 +59,7 @@ wormCol:	.space	40 * 4
 	.align 4
 wormRow:	.space	40 * 4
 	.align 4
-grid:		.space	20 * 40 * 4
+grid:		.space	20 * 40 * 1
 randSeed:	.word	0
 main__0:	.asciiz "Invalid Length (4..20)"
 main__1:	.asciiz "Invalid # Moves (0..99)"
@@ -342,7 +342,7 @@ clearGrid:
 #}
 	
 
-   la $t1, grid 		#	&grid[row][col]
+    la $t1, grid 		#	&grid[row][col]
 	li $t2, '.'
 	li $t3, 0			#   row
 	li $t4, 0			#	col
@@ -367,7 +367,7 @@ clearGrid:
 		add $t7, $t7, $t1
 
 		li $t2, '.'
-		sw $t2, ($t7)
+		sb $t2, ($t7)
    		
     
 
@@ -446,7 +446,7 @@ drawGrid_loop1:
 		slt $t2, $t4, $s0
 		beq $t2, $0, drawGrid_end2
 		li $t5,0
-		li $t6,4
+		li $t6,1
 		mul $t5, $t3, $s0
 		mul $t5, $t5, $t6
 		mul $t6, $t6, $t4
