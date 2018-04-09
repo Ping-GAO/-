@@ -342,8 +342,8 @@ clearGrid:
 #}
 	
 
-    la $t1, grid 		#	&grid[row][col]
-	li $t2, '.'
+   la $t1, grid 		#	&grid[row][col]
+	#li $t2, '.'
 	li $t3, 0			#   row
 	li $t4, 0			#	col
 	li $t5, 40
@@ -359,14 +359,15 @@ clearGrid:
 		slt $t7, $t4, $t5
 		beq $t7, $0, clearGrid_end2
 		li $t7,0
-		li $t2,4
+		li $t2,1
 		mul $t7, $t3, $t5
 		mul $t7, $t7, $t2
 		mul $t2, $t2, $t4
 		add $t7, $t7, $t2
 		add $t7, $t7, $t1
 
-		li $t2, '.'
+		#li $t2, '.'
+		addi $t2, $0, '.'
 		sb $t2, ($t7)
    		
     
@@ -453,7 +454,7 @@ drawGrid_loop1:
 		add $t5, $t5, $t6
 		add $t5, $t5, $t1
 
-		lw $t2, ($t5)
+		lb $t2, ($t5)
 		move $a0, $t2
 		li $v0,11
 		syscall
@@ -1128,7 +1129,7 @@ addWormToGrid:
    
 
 	li $t6, 0
-	li $t7, 4
+	li $t7, 1
 	#lw $t4, NCOLS
 	#lw $t5, NROWS
 	li $t4, 40
@@ -1139,8 +1140,9 @@ addWormToGrid:
 	mul $t7, $t7, $t2
 	add $t6, $t6, $t7
 	add $t6, $t6, $s2
-	li $t4, '@'
-	sw $t4, ($t6)
+	#li $t4, '@'
+	addi $t4, $0, '@'
+	sb $t4, ($t6)
 
    
    
@@ -1161,7 +1163,7 @@ addWormToGrid:
 		lw $t2, ($t5)
 
 		li $t6, 0
-		li $t7, 4
+		li $t7, 1
 		#lw $t4, NCOLS
 		#lw $t5, NROWS
 		li $t4, 40
@@ -1171,8 +1173,9 @@ addWormToGrid:
 		mul $t7, $t7, $t2
 		add $t6, $t6, $t7
 		add $t6, $t6, $s2
-		li $t4, 'o'
-		sw $t4, ($t6)
+		#li $t4, 'o'
+      addi $t4, $0, 'o'
+		sb $t4, ($t6)
 
 		addi $t0, $t0, 1
 		j addWormTogrid_loop1
