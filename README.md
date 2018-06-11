@@ -1,2 +1,1 @@
-# -
-动态规划学习
+Code rework, scatch code...
