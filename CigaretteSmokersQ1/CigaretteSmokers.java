@@ -55,7 +55,7 @@ public class CigaretteSmokers {
 		C2.start();
 
 		
-		//System.out.println("The End.");
+		
 	}
 
 }

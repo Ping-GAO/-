@@ -31,7 +31,6 @@ public class Smoker extends Thread {
 			try {
 
 				ingridenSemtHold.acquire();
-				//System.out.println("Smoker code");
 				makeCigarette();
 				agentSem.release();
 				smoke();
@@ -47,7 +46,7 @@ public class Smoker extends Thread {
 	public void makeCigarette() {
 
 		System.out.println("make Cigarette with his " + holdItem);
-		
+
 	};
 
 	public void smoke() {

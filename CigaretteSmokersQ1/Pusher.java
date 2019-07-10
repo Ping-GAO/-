@@ -30,23 +30,16 @@ public class Pusher extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				//System.out.println("Pusher code");
-
 				ingridentHold.acquire();
 				mutex.acquire();
 				if (isFirst.compareAndSet(true, false)) {
-
 					ingridentSemDontHold2.release();
-
 				} else if (isSecond.compareAndSet(true, false)) {
 
 					ingridentSemDontHold1.release();
 
 				} else {
-					// System.out.println("Here is me");
 					isThrird.getAndSet(true);
-					//System.out.println(pusherName);
-					//System.out.println("" + isFirst.get() + isSecond.get() + isThrird.get());
 
 				}
 
