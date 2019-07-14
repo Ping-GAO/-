@@ -46,6 +46,14 @@ public class Smoker extends Thread {
 	public void makeCigarette() {
 
 		System.out.println("make Cigarette with his " + holdItem);
+		// the triple false is legit because if this is the smoker with tobacco he will
+		// awaken by the other two pushers, look into the pusher code
+		// he set the ingredients to false before signal the thread.
+		// so it justify the two false, and the boolean only represent the ingredients
+		// one the table given by the agent
+		// the smoker with tobacco will always get a false, because he don't need that
+		// he has his own tobacco
+		System.out.println("three varible is " + isTobacco.get() + isPaper.get() + isMatch.get());
 
 	};
 
